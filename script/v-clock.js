@@ -50,7 +50,24 @@ class displayInit{
 		/* 也是一样先执行出来，不然得等1秒挺麻烦的 */
 		setInterval(freshTime(), 1000);
 	}
+	/* 设定指针颜色 */
+	initSetColor(){
+		this._pointerColor = this.defaultPointerColor; /* 指针颜色的设定，默认来自 defaultPointerColor */
+
+		/* 解决改色后不会立即刷新的问题 */
+		Object.defineProperty(this, 'pointerColor', {
+			get(){
+				return this._pointerColor;
+			},
+			set(value){
+				this._pointerColor = value;
+				this.refresh();
+			}
+		});
+	}
 	init(obj){
+		this.initSetColor();
+
 		this.canvas = obj.canvas;
 
 		this.resetWindow();
@@ -118,8 +135,8 @@ class vClock extends display{
 
 }
 
-vClock.prototype.version = "0.0.1";
-vClock.prototype.pointerColor = 'grey';
+vClock.prototype.version = "0.0.2";
+vClock.prototype.defaultPointerColor = 'darkred';
 
 window.vClock = vClock;
 
